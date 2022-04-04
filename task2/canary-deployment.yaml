@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web-v2
+    version: v2
+  name: web-v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-v2
+  template:
+    metadata:
+      labels:
+        app: web-v2
+        version: v2
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: config-nginx
+            mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: config-nginx
+          configMap:
+            name: nginx-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web-v2
+  name: web-v2
+spec:
+  type: NodePort
+  selector:
+    app: web-v2
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
