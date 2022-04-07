@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2022-03-29T19:21:05Z"
+  labels:
+    run: web
+  name: web
+  namespace: default
+  resourceVersion: "104423"
+  uid: 6c4d020f-a2cd-4874-9df0-da99ec2507f3
+spec:
+  containers:
+  - image: nginx:latest
+    name: web
+    volumeMounts:
+    - mountPath: /emptydir
+      name: emptydir
+  volumes:
+  - name: emptydir
+    emptyDir: {}
+    # hostPath:
+    #   # Ensure the file directory is created.
+    #   path: /emptydir
